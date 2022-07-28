@@ -7,7 +7,7 @@ def get_tracks_id(tracks):
 
   return track_ids
 
-def get_playlist_tracks(user_id, playlist_id):
+def get_playlist_tracks(user_id, playlist_id, sp):
     results = sp.user_playlist_tracks(user_id, playlist_id)
     tracks = get_tracks_id(results['items'])
     while results['next']:
@@ -27,7 +27,7 @@ def get_all_tracks(user_id, playlist_id):
   
   return tracks
 
-def get_track_info(track):
+def get_track_info(track, sp):
   track_info = sp.track(track)
 
   name = track_info['name']
