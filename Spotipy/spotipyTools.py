@@ -1,0 +1,60 @@
+def get_tracks_id(tracks):
+  
+  track_ids = []
+  
+  for item in tracks:
+    track_ids.append(item['track']['id'])
+
+  return track_ids
+
+def get_playlist_tracks(user_id, playlist_id):
+    results = sp.user_playlist_tracks(user_id, playlist_id)
+    tracks = get_tracks_id(results['items'])
+    while results['next']:
+        results = sp.next(results)
+        tracks.extend(get_tracks_id(results['items']))
+    return tracks
+
+def get_all_tracks(user_id, playlist_id):
+
+  play_list = sp.user_playlist_tracks(user_id, playlist_id)
+
+  tracks = []
+
+  for item in play_list['tracks']['items']:
+    track = item['track']['id']
+    tracks.append(track)
+  
+  return tracks
+
+def get_track_info(track):
+  track_info = sp.track(track)
+
+  name = track_info['name']
+  artist_name = track_info['artists'][0]['name']
+  artist_url = track_info['artists'][0]['external_urls']['spotify']
+  album_name = track_info['album']['name']
+  album_date = track_info['album']['release_date']
+  album_popularity = track_info['popularity']
+  track_duration = track_info['duration_ms']
+
+  track_features = sp.audio_features(track)
+
+  danceability = track_features[0]['danceability']
+  energy = track_features[0]['energy']
+  instrumentalness = track_features[0]['instrumentalness']
+  liveness = track_features[0]['liveness']
+  tempo = track_features[0]['tempo']
+
+  track_complete_info = [name, artist_name, album_name, album_date, album_popularity, track_duration, danceability, energy, instrumentalness, liveness, tempo, artist_url]
+
+  return track_complete_info
+
+def get_artist_genre(artists):
+
+  genres = []
+
+  for item in artists:
+    genres.append(sp.artist(item)['genres'])
+
+  return genres
