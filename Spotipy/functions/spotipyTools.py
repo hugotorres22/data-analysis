@@ -15,7 +15,7 @@ def get_playlist_tracks(user_id, playlist_id, sp):
         tracks.extend(get_tracks_id(results['items']))
     return tracks
 
-def get_all_tracks(user_id, playlist_id):
+def get_all_tracks(user_id, playlist_id, sp):
 
   play_list = sp.user_playlist_tracks(user_id, playlist_id)
 
@@ -50,7 +50,7 @@ def get_track_info(track, sp):
 
   return track_complete_info
 
-def get_artist_genre(artists):
+def get_artist_genre(artists, sp):
 
   genres = []
 
