@@ -16,6 +16,15 @@ def get_date_added(tracks):
 
   return dates_added
 
+def get_date_played(tracks):
+  
+  dates_played = []
+  
+  for item in tracks:
+    dates_played.append(item['played_at'])
+
+  return dates_played
+
 def get_playlist_info(user_id, playlist_id, sp):
     results = sp.user_playlist_tracks(user_id, playlist_id)
     
@@ -71,3 +80,15 @@ def get_artist_genre(artists, sp):
     genres.append(sp.artist(item)['genres'])
 
   return genres
+
+def get_recent_tracks(sp_login, n_tracks):
+    results = sp_login.current_user_recently_played()
+    
+    tracks = get_tracks_id(results['items'])
+    dates = get_date_played(results['items'])
+
+    while results['next'] and len(tracks) < n_tracks:
+        results = sp_login.next(results)
+        tracks.extend(get_tracks_id(results['items']))
+        dates.extend(get_date_played(results['items']))
+    return tracks, dates
