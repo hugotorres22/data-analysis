@@ -7,13 +7,26 @@ def get_tracks_id(tracks):
 
   return track_ids
 
-def get_playlist_tracks(user_id, playlist_id, sp):
+def get_date_added(tracks):
+  
+  dates_added = []
+  
+  for item in tracks:
+    dates_added.append(item['added_at'])
+
+  return dates_added
+
+def get_playlist_info(user_id, playlist_id, sp):
     results = sp.user_playlist_tracks(user_id, playlist_id)
+    
     tracks = get_tracks_id(results['items'])
+    dates = get_date_added(results['items'])
+
     while results['next']:
         results = sp.next(results)
         tracks.extend(get_tracks_id(results['items']))
-    return tracks
+        dates.extend(get_date_added(results['items']))
+    return tracks, dates
 
 def get_all_tracks(user_id, playlist_id, sp):
 
