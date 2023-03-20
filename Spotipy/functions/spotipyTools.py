@@ -1,4 +1,6 @@
 def get_tracks_id(tracks):
+  '''Takes as input the response from Spotipy when called to retrieve all playlist tracks 
+  and filters out the track ID'''
   
   track_ids = []
   
@@ -8,6 +10,8 @@ def get_tracks_id(tracks):
   return track_ids
 
 def get_date_added(tracks):
+  '''Takes as input the response from Spotipy when called to retrieve all playlist tracks 
+  and filters out the date when the track was added'''
   
   dates_added = []
   
@@ -17,6 +21,8 @@ def get_date_added(tracks):
   return dates_added
 
 def get_date_played(tracks):
+  '''Takes as input the response from Spotipy when called to retrieve all the latest played tracks 
+  and filters out the date when the track was played'''
   
   dates_played = []
   
@@ -26,6 +32,9 @@ def get_date_played(tracks):
   return dates_played
 
 def get_playlist_info(user_id, playlist_id, sp):
+    '''Receives as input the playlist ID, its respective User ID and an instance of the Spotipy client.
+      Retrives all tracks' ID and the respective adding date to the playlist.'''
+    
     results = sp.user_playlist_tracks(user_id, playlist_id)
     
     tracks = get_tracks_id(results['items'])
@@ -38,6 +47,8 @@ def get_playlist_info(user_id, playlist_id, sp):
     return tracks, dates
 
 def get_all_tracks(user_id, playlist_id, sp):
+  '''Receives as input the playlist ID, its respective User ID and an instance of the Spotipy client.
+      Retrives all tracks' ID and the respective adding date to the playlist.'''
 
   play_list = sp.user_playlist_tracks(user_id, playlist_id)
 
@@ -50,6 +61,9 @@ def get_all_tracks(user_id, playlist_id, sp):
   return tracks
 
 def get_track_info(track, sp):
+  '''Takes as input a track ID and an instance of the Spotipy client.
+  Retrieves all info related to the track's artist, album and features'''
+
   track_info = sp.track(track)
 
   name = track_info['name']
@@ -73,6 +87,8 @@ def get_track_info(track, sp):
   return track_complete_info
 
 def get_artist_genre(artists, sp):
+  '''Takes as input an artist ID and an instance of the Spotipy client.
+  Retrieves all genres associated with the artist'''
 
   genres = []
 
@@ -82,6 +98,8 @@ def get_artist_genre(artists, sp):
   return genres
 
 def get_recent_tracks(sp_login, n_tracks):
+    '''Takes as input an instance of the Spotipy client and the number of tracks to retrieve.
+  Retrieves all tracks ID of the latest n_tracks played by the user.'''
     results = sp_login.current_user_recently_played()
     
     tracks = get_tracks_id(results['items'])
